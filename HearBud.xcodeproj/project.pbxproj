@@ -1,0 +1,433 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3CE65EDF19F6B6D1008B5110 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65EDE19F6B6D1008B5110 /* main.m */; };
+		3CE65EE219F6B6D1008B5110 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65EE119F6B6D1008B5110 /* AppDelegate.m */; };
+		3CE65EE519F6B6D1008B5110 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65EE419F6B6D1008B5110 /* FirstViewController.m */; };
+		3CE65EE819F6B6D1008B5110 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65EE719F6B6D1008B5110 /* SecondViewController.m */; };
+		3CE65EEB19F6B6D1008B5110 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3CE65EE919F6B6D1008B5110 /* Main.storyboard */; };
+		3CE65EED19F6B6D1008B5110 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CE65EEC19F6B6D1008B5110 /* Images.xcassets */; };
+		3CE65EF019F6B6D1008B5110 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CE65EEE19F6B6D1008B5110 /* LaunchScreen.xib */; };
+		3CE65EFC19F6B6D1008B5110 /* HearBudTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65EFB19F6B6D1008B5110 /* HearBudTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3CE65EF619F6B6D1008B5110 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3CE65ED119F6B6D1008B5110 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3CE65ED819F6B6D1008B5110;
+			remoteInfo = HearBud;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		3CE65ED919F6B6D1008B5110 /* HearBud.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HearBud.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CE65EDD19F6B6D1008B5110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3CE65EDE19F6B6D1008B5110 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		3CE65EE019F6B6D1008B5110 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		3CE65EE119F6B6D1008B5110 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		3CE65EE319F6B6D1008B5110 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
+		3CE65EE419F6B6D1008B5110 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
+		3CE65EE619F6B6D1008B5110 /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
+		3CE65EE719F6B6D1008B5110 /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		3CE65EEA19F6B6D1008B5110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		3CE65EEC19F6B6D1008B5110 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		3CE65EEF19F6B6D1008B5110 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		3CE65EF519F6B6D1008B5110 /* HearBudTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HearBudTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		3CE65EFA19F6B6D1008B5110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3CE65EFB19F6B6D1008B5110 /* HearBudTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HearBudTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3CE65ED619F6B6D1008B5110 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3CE65EF219F6B6D1008B5110 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3CE65ED019F6B6D1008B5110 = {
+			isa = PBXGroup;
+			children = (
+				3CE65EDB19F6B6D1008B5110 /* HearBud */,
+				3CE65EF819F6B6D1008B5110 /* HearBudTests */,
+				3CE65EDA19F6B6D1008B5110 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3CE65EDA19F6B6D1008B5110 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3CE65ED919F6B6D1008B5110 /* HearBud.app */,
+				3CE65EF519F6B6D1008B5110 /* HearBudTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		3CE65EDB19F6B6D1008B5110 /* HearBud */ = {
+			isa = PBXGroup;
+			children = (
+				3CE65EE019F6B6D1008B5110 /* AppDelegate.h */,
+				3CE65EE119F6B6D1008B5110 /* AppDelegate.m */,
+				3CE65EE319F6B6D1008B5110 /* FirstViewController.h */,
+				3CE65EE419F6B6D1008B5110 /* FirstViewController.m */,
+				3CE65EE619F6B6D1008B5110 /* SecondViewController.h */,
+				3CE65EE719F6B6D1008B5110 /* SecondViewController.m */,
+				3CE65EE919F6B6D1008B5110 /* Main.storyboard */,
+				3CE65EEC19F6B6D1008B5110 /* Images.xcassets */,
+				3CE65EEE19F6B6D1008B5110 /* LaunchScreen.xib */,
+				3CE65EDC19F6B6D1008B5110 /* Supporting Files */,
+			);
+			path = HearBud;
+			sourceTree = "<group>";
+		};
+		3CE65EDC19F6B6D1008B5110 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3CE65EDD19F6B6D1008B5110 /* Info.plist */,
+				3CE65EDE19F6B6D1008B5110 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3CE65EF819F6B6D1008B5110 /* HearBudTests */ = {
+			isa = PBXGroup;
+			children = (
+				3CE65EFB19F6B6D1008B5110 /* HearBudTests.m */,
+				3CE65EF919F6B6D1008B5110 /* Supporting Files */,
+			);
+			path = HearBudTests;
+			sourceTree = "<group>";
+		};
+		3CE65EF919F6B6D1008B5110 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				3CE65EFA19F6B6D1008B5110 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3CE65ED819F6B6D1008B5110 /* HearBud */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3CE65EFF19F6B6D1008B5110 /* Build configuration list for PBXNativeTarget "HearBud" */;
+			buildPhases = (
+				3CE65ED519F6B6D1008B5110 /* Sources */,
+				3CE65ED619F6B6D1008B5110 /* Frameworks */,
+				3CE65ED719F6B6D1008B5110 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HearBud;
+			productName = HearBud;
+			productReference = 3CE65ED919F6B6D1008B5110 /* HearBud.app */;
+			productType = "com.apple.product-type.application";
+		};
+		3CE65EF419F6B6D1008B5110 /* HearBudTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3CE65F0219F6B6D1008B5110 /* Build configuration list for PBXNativeTarget "HearBudTests" */;
+			buildPhases = (
+				3CE65EF119F6B6D1008B5110 /* Sources */,
+				3CE65EF219F6B6D1008B5110 /* Frameworks */,
+				3CE65EF319F6B6D1008B5110 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3CE65EF719F6B6D1008B5110 /* PBXTargetDependency */,
+			);
+			name = HearBudTests;
+			productName = HearBudTests;
+			productReference = 3CE65EF519F6B6D1008B5110 /* HearBudTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		3CE65ED119F6B6D1008B5110 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0600;
+				ORGANIZATIONNAME = "Ritchie Bui";
+				TargetAttributes = {
+					3CE65ED819F6B6D1008B5110 = {
+						CreatedOnToolsVersion = 6.0.1;
+					};
+					3CE65EF419F6B6D1008B5110 = {
+						CreatedOnToolsVersion = 6.0.1;
+						TestTargetID = 3CE65ED819F6B6D1008B5110;
+					};
+				};
+			};
+			buildConfigurationList = 3CE65ED419F6B6D1008B5110 /* Build configuration list for PBXProject "HearBud" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 3CE65ED019F6B6D1008B5110;
+			productRefGroup = 3CE65EDA19F6B6D1008B5110 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3CE65ED819F6B6D1008B5110 /* HearBud */,
+				3CE65EF419F6B6D1008B5110 /* HearBudTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3CE65ED719F6B6D1008B5110 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CE65EEB19F6B6D1008B5110 /* Main.storyboard in Resources */,
+				3CE65EF019F6B6D1008B5110 /* LaunchScreen.xib in Resources */,
+				3CE65EED19F6B6D1008B5110 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3CE65EF319F6B6D1008B5110 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3CE65ED519F6B6D1008B5110 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CE65EE819F6B6D1008B5110 /* SecondViewController.m in Sources */,
+				3CE65EE219F6B6D1008B5110 /* AppDelegate.m in Sources */,
+				3CE65EE519F6B6D1008B5110 /* FirstViewController.m in Sources */,
+				3CE65EDF19F6B6D1008B5110 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3CE65EF119F6B6D1008B5110 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3CE65EFC19F6B6D1008B5110 /* HearBudTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3CE65EF719F6B6D1008B5110 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3CE65ED819F6B6D1008B5110 /* HearBud */;
+			targetProxy = 3CE65EF619F6B6D1008B5110 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		3CE65EE919F6B6D1008B5110 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3CE65EEA19F6B6D1008B5110 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		3CE65EEE19F6B6D1008B5110 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				3CE65EEF19F6B6D1008B5110 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		3CE65EFD19F6B6D1008B5110 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		3CE65EFE19F6B6D1008B5110 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		3CE65F0019F6B6D1008B5110 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = HearBud/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		3CE65F0119F6B6D1008B5110 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = HearBud/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		3CE65F0319F6B6D1008B5110 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = HearBudTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HearBud.app/HearBud";
+			};
+			name = Debug;
+		};
+		3CE65F0419F6B6D1008B5110 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = HearBudTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HearBud.app/HearBud";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3CE65ED419F6B6D1008B5110 /* Build configuration list for PBXProject "HearBud" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CE65EFD19F6B6D1008B5110 /* Debug */,
+				3CE65EFE19F6B6D1008B5110 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3CE65EFF19F6B6D1008B5110 /* Build configuration list for PBXNativeTarget "HearBud" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CE65F0019F6B6D1008B5110 /* Debug */,
+				3CE65F0119F6B6D1008B5110 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		3CE65F0219F6B6D1008B5110 /* Build configuration list for PBXNativeTarget "HearBudTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3CE65F0319F6B6D1008B5110 /* Debug */,
+				3CE65F0419F6B6D1008B5110 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 3CE65ED119F6B6D1008B5110 /* Project object */;
+}
