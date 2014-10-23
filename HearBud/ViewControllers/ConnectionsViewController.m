@@ -124,9 +124,14 @@
 
 #pragma mark - UITableView Delegate Methods
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
 	return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+	return [[MultipeerManager sharedInstance].connectedDevices count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
