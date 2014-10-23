@@ -15,6 +15,9 @@
 		3CE65EED19F6B6D1008B5110 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3CE65EEC19F6B6D1008B5110 /* Images.xcassets */; };
 		3CE65EF019F6B6D1008B5110 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3CE65EEE19F6B6D1008B5110 /* LaunchScreen.xib */; };
 		3CE65EFC19F6B6D1008B5110 /* HearBudTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65EFB19F6B6D1008B5110 /* HearBudTests.m */; };
+		3CE65F0819F6B7B7008B5110 /* MultipeerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65F0719F6B7B7008B5110 /* MultipeerManager.m */; };
+		3CE65F0B19F6B914008B5110 /* MultipeerConnectivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CE65F0A19F6B914008B5110 /* MultipeerConnectivity.framework */; };
+		3CE65F0E19F6C713008B5110 /* ConnectionsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65F0D19F6C713008B5110 /* ConnectionsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +46,11 @@
 		3CE65EF519F6B6D1008B5110 /* HearBudTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HearBudTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CE65EFA19F6B6D1008B5110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3CE65EFB19F6B6D1008B5110 /* HearBudTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HearBudTests.m; sourceTree = "<group>"; };
+		3CE65F0619F6B7B7008B5110 /* MultipeerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MultipeerManager.h; path = Managers/MultipeerManager.h; sourceTree = "<group>"; };
+		3CE65F0719F6B7B7008B5110 /* MultipeerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MultipeerManager.m; path = Managers/MultipeerManager.m; sourceTree = "<group>"; };
+		3CE65F0A19F6B914008B5110 /* MultipeerConnectivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MultipeerConnectivity.framework; path = System/Library/Frameworks/MultipeerConnectivity.framework; sourceTree = SDKROOT; };
+		3CE65F0C19F6C713008B5110 /* ConnectionsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConnectionsViewController.h; path = ViewControllers/ConnectionsViewController.h; sourceTree = "<group>"; };
+		3CE65F0D19F6C713008B5110 /* ConnectionsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConnectionsViewController.m; path = ViewControllers/ConnectionsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3CE65F0B19F6B914008B5110 /* MultipeerConnectivity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +75,7 @@
 		3CE65ED019F6B6D1008B5110 = {
 			isa = PBXGroup;
 			children = (
+				3CE65F0A19F6B914008B5110 /* MultipeerConnectivity.framework */,
 				3CE65EDB19F6B6D1008B5110 /* HearBud */,
 				3CE65EF819F6B6D1008B5110 /* HearBudTests */,
 				3CE65EDA19F6B6D1008B5110 /* Products */,
@@ -84,6 +94,7 @@
 		3CE65EDB19F6B6D1008B5110 /* HearBud */ = {
 			isa = PBXGroup;
 			children = (
+				3CE65F0919F6B7C1008B5110 /* Managers */,
 				3CE65EE019F6B6D1008B5110 /* AppDelegate.h */,
 				3CE65EE119F6B6D1008B5110 /* AppDelegate.m */,
 				3CE65EE319F6B6D1008B5110 /* FirstViewController.h */,
@@ -94,6 +105,8 @@
 				3CE65EEC19F6B6D1008B5110 /* Images.xcassets */,
 				3CE65EEE19F6B6D1008B5110 /* LaunchScreen.xib */,
 				3CE65EDC19F6B6D1008B5110 /* Supporting Files */,
+				3CE65F0C19F6C713008B5110 /* ConnectionsViewController.h */,
+				3CE65F0D19F6C713008B5110 /* ConnectionsViewController.m */,
 			);
 			path = HearBud;
 			sourceTree = "<group>";
@@ -122,6 +135,15 @@
 				3CE65EFA19F6B6D1008B5110 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3CE65F0919F6B7C1008B5110 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				3CE65F0619F6B7B7008B5110 /* MultipeerManager.h */,
+				3CE65F0719F6B7B7008B5110 /* MultipeerManager.m */,
+			);
+			name = Managers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,6 +195,7 @@
 				TargetAttributes = {
 					3CE65ED819F6B6D1008B5110 = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = 9A46X4GTZE;
 					};
 					3CE65EF419F6B6D1008B5110 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -228,6 +251,8 @@
 				3CE65EE219F6B6D1008B5110 /* AppDelegate.m in Sources */,
 				3CE65EE519F6B6D1008B5110 /* FirstViewController.m in Sources */,
 				3CE65EDF19F6B6D1008B5110 /* main.m in Sources */,
+				3CE65F0E19F6C713008B5110 /* ConnectionsViewController.m in Sources */,
+				3CE65F0819F6B7B7008B5110 /* MultipeerManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,9 +374,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HearBud/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -359,9 +388,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = HearBud/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
