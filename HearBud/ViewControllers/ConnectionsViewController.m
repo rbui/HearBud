@@ -54,10 +54,18 @@
 	[self presentViewController: multiManager.browser animated:YES completion:nil];
 }
 
-- (IBAction)disconnect {
+- (IBAction)disconnect
+{
+	MultipeerManager *multiManager = [MultipeerManager sharedInstance];
+	[multiManager.session disconnect];
+	
+	self.nameTextField.enabled = YES;
+	
+	[multiManager.connectedDevices removeAllObjects];
+	[self.connectionsTable reloadData];
 }
 
-#pragma mark - Private Methods 
+#pragma mark - Private Methods
 
 -(void)peerDidChangeStateWithNotification:(NSNotification *)notification
 {
