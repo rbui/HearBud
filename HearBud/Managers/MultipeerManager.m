@@ -8,6 +8,7 @@
 
 #import "MultipeerManager.h"
 #import "Common.h"
+#import "SongMetaData.h"
 
 static MultipeerManager *_sharedInstance;
 
@@ -57,10 +58,12 @@ static NSString * const HBServiceType = @"hearbud-service";
 	_connectedDevices = [[NSMutableArray alloc] init];
 
 	_allSongsQuery = [[MPMediaQuery alloc] init];
+	_songsToShare = [[NSMutableArray alloc] init];
+	[self createListOfSongsToShare];
 	
 //	MPMediaQuery *allSongsQuery = [[MPMediaQuery alloc] init];
 //	_songsToShare = [[NSMutableArray alloc] initWithArray: allSongsQuery.items];
-	
+	DLog(@"Will share %u songs", (unsigned int)[self.songsToShare count])
 	return self;
 }
 
@@ -109,8 +112,7 @@ static NSString * const HBServiceType = @"hearbud-service";
 
 -(void) sendSongListToPeers
 {
-	
-	NSData *songsData = [NSKeyedArchiver archivedDataWithRootObject: self.allSongsQuery];
+	NSData *songsData = [NSKeyedArchiver archivedDataWithRootObject: self.songsToShare];
 
 	DLog(@"size of songlist to be sent is %lu", (unsigned long)songsData.length)
 	
@@ -126,6 +128,20 @@ static NSString * const HBServiceType = @"hearbud-service";
 		NSLog(@"%@", [error localizedDescription]);
 	}
 }
+
+
+#pragma mark - Private Methods
+
+-(void)createListOfSongsToShare
+{
+	NSArray *queryResults = [self.allSongsQuery items];
+	for (MPMediaItem *item in queryResults)
+	{
+		SongMetaData *songData = [[SongMetaData alloc] initWithMediaItem:item];
+		[self.songsToShare addObject: songData];
+	}
+}
+
 
 
 #pragma mark - MCSessionDelegate Methods
@@ -148,12 +164,11 @@ static NSString * const HBServiceType = @"hearbud-service";
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
 {
-//	NSArray *songList = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-	MPMediaQuery *allSongsQ = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-	DLog(@"data received size is %lu", data.length);
+	NSArray *songList = [[NSArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+	DLog(@"data received size is %lu", (unsigned long)data.length);
 //	DLog(@"song list dearchived count: %lu", [songList count]);
 	NSDictionary *dict = @{@"peerID": peerID,
-						   @"songs" : allSongsQ
+						   @"songs" : songList
 						   };
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"MCDidReceiveDataNotification"
 														object:nil

@@ -12,6 +12,7 @@
 #import "FirstViewController.h"
 #import "MultipeerManager.h"
 #import "Common.h"
+#import "SongMetaData.h"
 
 @interface FirstViewController ()
 
@@ -56,8 +57,8 @@
 -(void)didReceiveDataWithNotification: (NSNotification *) notification
 {
 	MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-	MPMediaQuery *query = [[notification userInfo] objectForKey:@"songs"];
-	self.songs = [[NSMutableArray alloc] initWithArray:[query items]];
+	self.songs = [[notification userInfo] objectForKey:@"songs"];
+
 	DLog(@"Received %lu songs from %@", (unsigned long)[self.songs count], peerID.displayName);
 	[self.songsTable reloadData];
 }
@@ -92,7 +93,7 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
 	}
 	
-	NSString *songTitle = ((MPMediaItem *)[self.songs objectAtIndex:indexPath.row]).title;
+	NSString *songTitle = ((SongMetaData *)[self.songs objectAtIndex:indexPath.row]).title;
 	cell.textLabel.text = songTitle;
 
 //	cell.textLabel.text = [self.songs objectAtIndex:indexPath.row];
