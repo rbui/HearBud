@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Ritchie Bui. All rights reserved.
 //
 
+@import MediaPlayer;
+
 #import <Foundation/Foundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
@@ -17,7 +19,7 @@
 @property (nonatomic, strong) MCBrowserViewController *browser;
 @property (nonatomic, strong) NSMutableArray *connectedDevices;
 @property (nonatomic, strong) NSMutableArray *songsToShare;
-
+@property (nonatomic, strong) MPMediaQuery *allSongsQuery;
 
 -(void)setupPeerAndSessionWithDisplayName:(NSString *)displayName;
 -(void)setupMCBrowser;

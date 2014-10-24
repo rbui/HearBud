@@ -11,6 +11,7 @@
 
 #import "FirstViewController.h"
 #import "MultipeerManager.h"
+#import "Common.h"
 
 @interface FirstViewController ()
 
@@ -27,7 +28,6 @@
 											 selector:@selector(didReceiveDataWithNotification:)
 												 name:@"MCDidReceiveDataNotification"
 											   object:nil];
-	_songs = nil;
 	
 }
 
@@ -56,10 +56,12 @@
 -(void)didReceiveDataWithNotification: (NSNotification *) notification
 {
 	MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-	//	NSString *peerDisplayName = peerID.displayName;
-	self.songs = [[notification userInfo] objectForKey:@"songs"];
-	MultipeerManager *multiManager = [MultipeerManager sharedInstance];
+	MPMediaQuery *query = [[notification userInfo] objectForKey:@"songs"];
+	self.songs = [[NSMutableArray alloc] initWithArray:[query items]];
+	DLog(@"Received %lu songs from %@", (unsigned long)[self.songs count], peerID.displayName);
+	[self.songsTable reloadData];
 }
+
 
 #pragma mark - MPMediaPicker Delegate Methods
 
@@ -79,7 +81,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return 1;
+	return [self.songs count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -92,6 +94,8 @@
 	
 	NSString *songTitle = ((MPMediaItem *)[self.songs objectAtIndex:indexPath.row]).title;
 	cell.textLabel.text = songTitle;
+
+//	cell.textLabel.text = [self.songs objectAtIndex:indexPath.row];
 	
 	return cell;
 }

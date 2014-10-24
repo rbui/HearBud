@@ -6,9 +6,8 @@
 //  Copyright (c) 2014 Ritchie Bui. All rights reserved.
 //
 
-@import MediaPlayer;
-
 #import "MultipeerManager.h"
+#import "Common.h"
 
 static MultipeerManager *_sharedInstance;
 
@@ -56,9 +55,11 @@ static NSString * const HBServiceType = @"hearbud-service";
 	_browser = nil;
 	_advertiser = nil;
 	_connectedDevices = [[NSMutableArray alloc] init];
+
+	_allSongsQuery = [[MPMediaQuery alloc] init];
 	
-	MPMediaQuery *allSongsQuery = [[MPMediaQuery alloc] init];
-	_songsToShare = [[NSMutableArray alloc] initWithArray: allSongsQuery.items];
+//	MPMediaQuery *allSongsQuery = [[MPMediaQuery alloc] init];
+//	_songsToShare = [[NSMutableArray alloc] initWithArray: allSongsQuery.items];
 	
 	return self;
 }
@@ -108,7 +109,11 @@ static NSString * const HBServiceType = @"hearbud-service";
 
 -(void) sendSongListToPeers
 {
-	NSData *songsData = [NSKeyedArchiver archivedDataWithRootObject: self.songsToShare];
+	
+	NSData *songsData = [NSKeyedArchiver archivedDataWithRootObject: self.allSongsQuery];
+
+	DLog(@"size of songlist to be sent is %lu", (unsigned long)songsData.length)
+	
 	NSError *error;
 	MultipeerManager *multiManager = [MultipeerManager sharedInstance];
 	BOOL isSuccessful = [multiManager.session sendData:songsData
@@ -143,9 +148,12 @@ static NSString * const HBServiceType = @"hearbud-service";
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
 {
-	NSArray *songList = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//	NSArray *songList = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	MPMediaQuery *allSongsQ = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	DLog(@"data received size is %lu", data.length);
+//	DLog(@"song list dearchived count: %lu", [songList count]);
 	NSDictionary *dict = @{@"peerID": peerID,
-						   @"songs" : songList
+						   @"songs" : allSongsQ
 						   };
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"MCDidReceiveDataNotification"
 														object:nil
