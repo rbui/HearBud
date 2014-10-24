@@ -6,11 +6,15 @@
 //  Copyright (c) 2014 Ritchie Bui. All rights reserved.
 //
 
+@import MediaPlayer;
+
 #import "MultipeerManager.h"
 
 static MultipeerManager *_sharedInstance;
 
 @interface MultipeerManager ()
+
+-(void) sendSongListToPeers;
 
 @end
 
@@ -52,6 +56,9 @@ static NSString * const HBServiceType = @"hearbud-service";
 	_browser = nil;
 	_advertiser = nil;
 	_connectedDevices = [[NSMutableArray alloc] init];
+	
+	MPMediaQuery *allSongsQuery = [[MPMediaQuery alloc] init];
+	_songsToShare = [[NSMutableArray alloc] initWithArray: allSongsQuery.items];
 	
 	return self;
 }
@@ -99,6 +106,23 @@ static NSString * const HBServiceType = @"hearbud-service";
 }
 
 
+-(void) sendSongListToPeers
+{
+	NSData *songsData = [NSKeyedArchiver archivedDataWithRootObject: self.songsToShare];
+	NSError *error;
+	MultipeerManager *multiManager = [MultipeerManager sharedInstance];
+	BOOL isSuccessful = [multiManager.session sendData:songsData
+											   toPeers:multiManager.connectedDevices
+											  withMode:MCSessionSendDataReliable
+												 error:&error];
+
+	if (!isSuccessful)
+	{
+		NSLog(@"%@", [error localizedDescription]);
+	}
+}
+
+
 #pragma mark - MCSessionDelegate Methods
 
 -(void)session:(MCSession *)session peer:(MCPeerID *)peerID didChangeState:(MCSessionState)state
@@ -110,12 +134,22 @@ static NSString * const HBServiceType = @"hearbud-service";
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"MCDidChangeStateNotification"
 														object:nil
 													  userInfo:dict];
+	if (state == MCSessionStateConnected)
+	{
+		[self sendSongListToPeers];
+	}
 }
 
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
 {
-	
+	NSArray *songList = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	NSDictionary *dict = @{@"peerID": peerID,
+						   @"songs" : songList
+						   };
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"MCDidReceiveDataNotification"
+														object:nil
+													  userInfo:dict];
 }
 
 

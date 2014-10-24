@@ -9,7 +9,11 @@
 #import <UIKit/UIKit.h>
 
 @interface FirstViewController : UIViewController
+	<MPMediaPickerControllerDelegate,
+	UITableViewDataSource,
+	UITableViewDelegate>
 
+@property (nonatomic) NSMutableArray *songs;
 
 @end
 

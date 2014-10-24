@@ -27,6 +27,9 @@
 	
 	[[MultipeerManager sharedInstance] setupPeerAndSessionWithDisplayName: [[UIDevice currentDevice] name]];
 	[[MultipeerManager sharedInstance] advertiseSelf: self.advertiseVisibleSwitch.isOn];
+	[[MultipeerManager sharedInstance] setupMCBrowser];
+	[[MultipeerManager sharedInstance].browser setDelegate:self];
+	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(peerDidChangeStateWithNotification:)
@@ -37,8 +40,6 @@
 	[self.connectionsTable setDataSource:self];
 	
 	//TODO: remove observer when view unloads
-	
-	
 }
 
 - (void)didReceiveMemoryWarning {
@@ -48,10 +49,7 @@
 
 - (IBAction)browseForDevices
 {
-	MultipeerManager *multiManager = [MultipeerManager sharedInstance];
-	[multiManager setupMCBrowser];
-	[multiManager.browser setDelegate:self];
-	[self presentViewController: multiManager.browser animated:YES completion:nil];
+	[self presentViewController: [MultipeerManager sharedInstance].browser animated:YES completion:nil];
 }
 
 - (IBAction)disconnect
@@ -70,16 +68,17 @@
 -(void)peerDidChangeStateWithNotification:(NSNotification *)notification
 {
 	MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-	NSString *peerDisplayName = peerID.displayName;
+//	NSString *peerDisplayName = peerID.displayName;
 	MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
 	MultipeerManager *multiManager = [MultipeerManager sharedInstance];
 	
 	if (state == MCSessionStateConnected) {
-		[multiManager.connectedDevices addObject:peerDisplayName];
+//		[multiManager.connectedDevices addObject:peerDisplayName];
+		[multiManager.connectedDevices addObject: peerID];
 	}
 	else if (state == MCSessionStateNotConnected){
 		if ([multiManager.connectedDevices count] > 0) {
-			int indexOfPeer = [multiManager.connectedDevices indexOfObject:peerDisplayName];
+			int indexOfPeer = [multiManager.connectedDevices indexOfObject:peerID];
 			[multiManager.connectedDevices removeObjectAtIndex:indexOfPeer];
 		}
 	}
@@ -150,7 +149,9 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
 	}
 	
-	cell.textLabel.text = [[MultipeerManager sharedInstance].connectedDevices objectAtIndex:indexPath.row];
+	NSString *peerDisplayName = ((MCPeerID *)[[MultipeerManager sharedInstance].connectedDevices
+											  objectAtIndex:indexPath.row]).displayName;
+	cell.textLabel.text = peerDisplayName;
 	
 	return cell;
 }
