@@ -10,7 +10,17 @@
 #import "Common.h"
 #import "SongMetaData.h"
 
+
+#pragma mark - Constants
+
+static NSString *MMDidReceiveSongListNotificationKey = @"MMDidReceiveSongListNotification";
+static NSString *MMDidReceiveSongRequestNotificationKey = @"MMCDidReceiveSongRequestNotification";
+
+
+#pragma mark - Class Variables
+
 static MultipeerManager *_sharedInstance;
+
 
 @interface MultipeerManager ()
 
@@ -164,17 +174,50 @@ static NSString * const HBServiceType = @"hearbud-service";
 
 -(void)session:(MCSession *)session didReceiveData:(NSData *)data fromPeer:(MCPeerID *)peerID
 {
-	NSArray *songList = [[NSArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
-	DLog(@"data received size is %lu", (unsigned long)data.length);
-//	DLog(@"song list dearchived count: %lu", [songList count]);
-	NSDictionary *dict = @{@"peerID": peerID,
-						   @"songs" : songList
-						   };
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"MCDidReceiveDataNotification"
-														object:nil
-													  userInfo:dict];
+	id receivedData = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+	
+	if ([receivedData isKindOfClass:[NSArray class]])
+	{
+		NSArray *songList = [[NSArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+		DLog(@"data received size is %lu", (unsigned long)data.length);
+		//	DLog(@"song list dearchived count: %lu", [songList count]);
+		NSDictionary *dict = @{@"peerID": peerID,
+							   @"songs" : songList
+							   };
+		[[NSNotificationCenter defaultCenter] postNotificationName:MMDidReceiveSongListNotificationKey
+															object:nil
+														  userInfo:dict];
+	}
+	else if ([receivedData isKindOfClass:[SongMetaData class]])
+	{
+		SongMetaData *songMetaData = receivedData;
+		
+		// query for song
+//		[[NSNotificationCenter defaultCenter] postNotificationName:MMDidReceiveSongRequestNotificationKey
+//														  object:songMetaData];
+		[self retrieveMediaForSongData: songMetaData];
+	}
 }
 
+-(MPMediaItem *) retrieveMediaForSongData: (SongMetaData *) songData
+{
+	MPMediaPropertyPredicate *titlePredicate =
+	[MPMediaPropertyPredicate predicateWithValue: songData.title
+									 forProperty: MPMediaItemPropertyTitle];
+	MPMediaPropertyPredicate *artistPredicate =
+	[MPMediaPropertyPredicate predicateWithValue: songData.artist
+									 forProperty: MPMediaItemPropertyArtist];
+	MPMediaPropertyPredicate *albumPredicate =
+	[MPMediaPropertyPredicate predicateWithValue: songData.album
+									 forProperty: MPMediaItemPropertyAlbumTitle];
+	NSSet *predicates =
+	[NSSet setWithObjects: titlePredicate, artistPredicate, albumPredicate, nil];
+	
+	MPMediaQuery *mediaQuery = [[MPMediaQuery alloc] initWithFilterPredicates: predicates];
+	NSArray *queryitems = [mediaQuery items];
+	DLog(@"found song %@ matching request", ((MPMediaItem *)queryitems[0]).title);
+	return queryitems[0];
+}
 
 -(void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress
 {

@@ -27,7 +27,7 @@
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(didReceiveDataWithNotification:)
-												 name:@"MCDidReceiveDataNotification"
+												 name:MMDidReceiveSongListNotificationKey
 											   object:nil];
 	
 }
@@ -99,6 +99,11 @@
 //	cell.textLabel.text = [self.songs objectAtIndex:indexPath.row];
 	
 	return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+	
 }
 
 

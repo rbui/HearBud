@@ -11,6 +11,9 @@
 #import <Foundation/Foundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 
+static NSString *MMDidReceiveSongListNotificationKey;
+static NSString *MMDidReceiveSongRequestNotificationKey;
+
 @interface MultipeerManager : NSObject <MCSessionDelegate>
 
 @property (nonatomic, strong) MCPeerID *peerID;
