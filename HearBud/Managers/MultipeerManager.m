@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Ritchie Bui. All rights reserved.
 //
 
+@import AVFoundation;
+
 #import "MultipeerManager.h"
 #import "Common.h"
 #import "SongMetaData.h"
@@ -127,9 +129,8 @@ static NSString * const HBServiceType = @"hearbud-service";
 	DLog(@"size of songlist to be sent is %lu", (unsigned long)songsData.length)
 	
 	NSError *error;
-	MultipeerManager *multiManager = [MultipeerManager sharedInstance];
-	BOOL isSuccessful = [multiManager.session sendData:songsData
-											   toPeers:multiManager.connectedDevices
+	BOOL isSuccessful = [self.session sendData:songsData
+											   toPeers:self.connectedDevices
 											  withMode:MCSessionSendDataReliable
 												 error:&error];
 
@@ -139,6 +140,22 @@ static NSString * const HBServiceType = @"hearbud-service";
 	}
 }
 
+-(void) sendSongRequestToPeer:(SongMetaData *)songData
+{
+	NSData *data = [NSKeyedArchiver archivedDataWithRootObject: songData];
+	
+	NSError *error;
+	MultipeerManager *multiManager = [MultipeerManager sharedInstance];
+	BOOL isSuccessful = [multiManager.session sendData:data
+											   toPeers:@[songData.peerID]
+											  withMode:MCSessionSendDataReliable
+												 error:&error];
+	
+	if (!isSuccessful)
+	{
+		NSLog(@"%@", [error localizedDescription]);
+	}
+}
 
 #pragma mark - Private Methods
 
@@ -147,9 +164,19 @@ static NSString * const HBServiceType = @"hearbud-service";
 	NSArray *queryResults = [self.allSongsQuery items];
 	for (MPMediaItem *item in queryResults)
 	{
-		SongMetaData *songData = [[SongMetaData alloc] initWithMediaItem:item];
+		SongMetaData *songData = [[SongMetaData alloc] initWithMediaItem:item fromPeer:self.peerID];
 		[self.songsToShare addObject: songData];
 	}
+}
+
+-(void)streamSong:(MPMediaItem *)song ToPeer:(MCPeerID *)peer
+{
+	NSURL *mediaURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
+	AVURLAsset *asset = [AVURLAsset URLAssetWithURL:mediaURL options:nil];
+	AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:asset error:nil];
+	AVAssetReaderTrackOutput *assetOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:asset.tracks[0] outputSettings:nil];
+//	[self.assetReader addOutput:self.assetOutput];
+//	[self.assetReader startReading];
 }
 
 
@@ -195,7 +222,8 @@ static NSString * const HBServiceType = @"hearbud-service";
 		// query for song
 //		[[NSNotificationCenter defaultCenter] postNotificationName:MMDidReceiveSongRequestNotificationKey
 //														  object:songMetaData];
-		[self retrieveMediaForSongData: songMetaData];
+		MPMediaItem *song = [self retrieveMediaForSongData: songMetaData];
+		
 	}
 }
 
@@ -218,6 +246,7 @@ static NSString * const HBServiceType = @"hearbud-service";
 	DLog(@"found song %@ matching request", ((MPMediaItem *)queryitems[0]).title);
 	return queryitems[0];
 }
+
 
 -(void)session:(MCSession *)session didStartReceivingResourceWithName:(NSString *)resourceName fromPeer:(MCPeerID *)peerID withProgress:(NSProgress *)progress
 {

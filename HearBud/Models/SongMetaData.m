@@ -12,7 +12,7 @@
 
 #pragma mark - Constructors
 
--(id)initWithMediaItem:(MPMediaItem *)item
+-(id)initWithMediaItem:(MPMediaItem *)item fromPeer:(MCPeerID *)peer
 {
 	if ((self = [super init]) == nil)
 	{
@@ -22,6 +22,7 @@
 	self.title = item.title;
 	self.artist = item.artist;
 	self.album = item.albumTitle;
+	self.peerID = peer;
 	
 	return self;
 }
@@ -37,6 +38,8 @@
 	self.title = [decoder decodeObjectForKey:@"title"];
 	self.artist = [decoder decodeObjectForKey:@"artist"];
 	self.album = [decoder decodeObjectForKey:@"album"];
+	self.peerID = [decoder decodeObjectForKey:@"peerID"];
+
 	
 	return self;
 }
@@ -45,6 +48,7 @@
 	[encoder encodeObject:self.title forKey:@"title"];
 	[encoder encodeObject:self.artist forKey:@"artist"];
 	[encoder encodeObject:self.album forKey:@"album"];
+	[encoder encodeObject:self.peerID forKey:@"peerID"];
 }
 
 + (BOOL)supportsSecureCoding

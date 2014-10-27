@@ -8,13 +8,15 @@
 
 @import MediaPlayer;
 #import <Foundation/Foundation.h>
+@import MultipeerConnectivity;
 
 @interface SongMetaData : NSObject <NSSecureCoding>
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *artist;
 @property (nonatomic, strong) NSString *album;
+@property (nonatomic, strong) MCPeerID *peerID;
 
--(id)initWithMediaItem: (MPMediaItem *) item;
+-(id)initWithMediaItem: (MPMediaItem *)item fromPeer:(MCPeerID *)peer;
 
 @end

@@ -10,6 +10,7 @@
 
 #import <Foundation/Foundation.h>
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
+#import "SongMetaData.h"
 
 static NSString *MMDidReceiveSongListNotificationKey;
 static NSString *MMDidReceiveSongRequestNotificationKey;
@@ -28,6 +29,7 @@ static NSString *MMDidReceiveSongRequestNotificationKey;
 -(void)setupMCBrowser;
 -(void)advertiseSelf:(BOOL)shouldAdvertise;
 -(void)changeDisplayNameAndRestartSession:(NSString *) displayName;
+-(void)requestSongStream:(SongMetaData *) songData;
 
 +(MultipeerManager *) sharedInstance;
 
