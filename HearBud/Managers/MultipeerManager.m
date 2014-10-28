@@ -26,6 +26,11 @@ static MultipeerManager *_sharedInstance;
 
 @interface MultipeerManager ()
 
+@property (nonatomic, strong) AVAssetReader *assetReader;
+@property (nonatomic, strong) NSOutputStream *outStream;
+@property (nonatomic, strong) NSInputStream *inStream;
+@property (nonatomic, strong) AVAssetReaderTrackOutput *assetOutput;
+
 -(void) sendSongListToPeers;
 
 @end
@@ -78,6 +83,7 @@ static NSString * const HBServiceType = @"hearbud-service";
 	DLog(@"Will share %u songs", (unsigned int)[self.songsToShare count])
 	return self;
 }
+
 
 #pragma mark - Public Methods
 
@@ -169,16 +175,88 @@ static NSString * const HBServiceType = @"hearbud-service";
 	}
 }
 
--(void)streamSong:(MPMediaItem *)song ToPeer:(MCPeerID *)peer
+-(void)prepareAssetReaderFor:(MPMediaItem *)song
 {
 	NSURL *mediaURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
 	AVURLAsset *asset = [AVURLAsset URLAssetWithURL:mediaURL options:nil];
 	AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:asset error:nil];
-	AVAssetReaderTrackOutput *assetOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:asset.tracks[0] outputSettings:nil];
-//	[self.assetReader addOutput:self.assetOutput];
-//	[self.assetReader startReading];
+	self.assetOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:asset.tracks[0] outputSettings:nil];
+	
+	[assetReader addOutput:self.assetOutput];
+	[assetReader startReading];
 }
 
+-(void)prepareOutputStreamFor:(MCPeerID *)peer
+{
+	NSError *error;
+	self.outStream = [self.session startStreamWithName:@"musicStream" toPeer:peer error:&error];
+	[self.outStream setDelegate:self];
+	[self.outStream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+	[self.outStream open];
+}
+
+
+-(void)provideDataToStream
+{
+	CMSampleBufferRef sampleBuffer = [self.assetOutput copyNextSampleBuffer];
+	CMBlockBufferRef blockBuffer;
+	AudioBufferList audioBufferList;
+	
+	CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(sampleBuffer, NULL, &audioBufferList, sizeof(AudioBufferList), NULL, NULL, kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment, &blockBuffer);
+	
+	for (NSUInteger i = 0; i < audioBufferList.mNumberBuffers; i++)
+	{
+		AudioBuffer audioBuffer = audioBufferList.mBuffers[i];
+		[self.outStream write:audioBuffer.mData maxLength:audioBuffer.mDataByteSize];
+	}
+}
+
+-(MPMediaItem *) retrieveMediaForSongData: (SongMetaData *) songData
+{
+	MPMediaPropertyPredicate *titlePredicate =
+	[MPMediaPropertyPredicate predicateWithValue: songData.title
+									 forProperty: MPMediaItemPropertyTitle];
+	MPMediaPropertyPredicate *artistPredicate =
+	[MPMediaPropertyPredicate predicateWithValue: songData.artist
+									 forProperty: MPMediaItemPropertyArtist];
+	MPMediaPropertyPredicate *albumPredicate =
+	[MPMediaPropertyPredicate predicateWithValue: songData.album
+									 forProperty: MPMediaItemPropertyAlbumTitle];
+	NSSet *predicates =
+	[NSSet setWithObjects: titlePredicate, artistPredicate, albumPredicate, nil];
+	
+	MPMediaQuery *mediaQuery = [[MPMediaQuery alloc] initWithFilterPredicates: predicates];
+	NSArray *queryitems = [mediaQuery items];
+	DLog(@"found song %@ matching request", ((MPMediaItem *)queryitems[0]).title);
+	return queryitems[0];
+}
+
+
+#pragma mark - NSStream Delegate Methods
+
+-(void) stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
+{
+	switch (eventCode) {
+		case NSStreamEventHasBytesAvailable:
+			break;
+			
+		case NSStreamEventHasSpaceAvailable:
+			[self provideDataToStream];
+			break;
+			
+		case NSStreamEventEndEncountered:
+
+			break;
+			
+		case NSStreamEventErrorOccurred:
+
+			break;
+			
+		default:
+			break;
+	}
+	
+}
 
 
 #pragma mark - MCSessionDelegate Methods
@@ -218,33 +296,10 @@ static NSString * const HBServiceType = @"hearbud-service";
 	else if ([receivedData isKindOfClass:[SongMetaData class]])
 	{
 		SongMetaData *songMetaData = receivedData;
-		
-		// query for song
-//		[[NSNotificationCenter defaultCenter] postNotificationName:MMDidReceiveSongRequestNotificationKey
-//														  object:songMetaData];
 		MPMediaItem *song = [self retrieveMediaForSongData: songMetaData];
-		
+		[self prepareAssetReaderFor:song];
+		[self prepareOutputStreamFor:peerID];
 	}
-}
-
--(MPMediaItem *) retrieveMediaForSongData: (SongMetaData *) songData
-{
-	MPMediaPropertyPredicate *titlePredicate =
-	[MPMediaPropertyPredicate predicateWithValue: songData.title
-									 forProperty: MPMediaItemPropertyTitle];
-	MPMediaPropertyPredicate *artistPredicate =
-	[MPMediaPropertyPredicate predicateWithValue: songData.artist
-									 forProperty: MPMediaItemPropertyArtist];
-	MPMediaPropertyPredicate *albumPredicate =
-	[MPMediaPropertyPredicate predicateWithValue: songData.album
-									 forProperty: MPMediaItemPropertyAlbumTitle];
-	NSSet *predicates =
-	[NSSet setWithObjects: titlePredicate, artistPredicate, albumPredicate, nil];
-	
-	MPMediaQuery *mediaQuery = [[MPMediaQuery alloc] initWithFilterPredicates: predicates];
-	NSArray *queryitems = [mediaQuery items];
-	DLog(@"found song %@ matching request", ((MPMediaItem *)queryitems[0]).title);
-	return queryitems[0];
 }
 
 

@@ -15,7 +15,7 @@
 static NSString *MMDidReceiveSongListNotificationKey;
 static NSString *MMDidReceiveSongRequestNotificationKey;
 
-@interface MultipeerManager : NSObject <MCSessionDelegate>
+@interface MultipeerManager : NSObject <MCSessionDelegate, NSStreamDelegate>
 
 @property (nonatomic, strong) MCPeerID *peerID;
 @property (nonatomic, strong) MCSession *session;
