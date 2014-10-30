@@ -11,13 +11,15 @@
 #import "MultipeerManager.h"
 #import "Common.h"
 #import "SongMetaData.h"
+#import "OutStreamManager.h"
+#import "InStreamManager.h"
 
 
 #pragma mark - Constants
 
 static NSString *MMDidReceiveSongListNotificationKey = @"MMDidReceiveSongListNotification";
 static NSString *MMDidReceiveSongRequestNotificationKey = @"MMCDidReceiveSongRequestNotification";
-
+static NSString * const HBServiceType = @"hearbud-service";
 
 #pragma mark - Class Variables
 
@@ -26,10 +28,7 @@ static MultipeerManager *_sharedInstance;
 
 @interface MultipeerManager ()
 
-@property (nonatomic, strong) AVAssetReader *assetReader;
-@property (nonatomic, strong) NSOutputStream *outStream;
-@property (nonatomic, strong) NSInputStream *inStream;
-@property (nonatomic, strong) AVAssetReaderTrackOutput *assetOutput;
+
 
 -(void) sendSongListToPeers;
 
@@ -38,7 +37,6 @@ static MultipeerManager *_sharedInstance;
 
 @implementation MultipeerManager
 
-static NSString * const HBServiceType = @"hearbud-service";
 
 #pragma mark - Properties
 
@@ -163,6 +161,7 @@ static NSString * const HBServiceType = @"hearbud-service";
 	}
 }
 
+
 #pragma mark - Private Methods
 
 -(void)createListOfSongsToShare
@@ -172,42 +171,6 @@ static NSString * const HBServiceType = @"hearbud-service";
 	{
 		SongMetaData *songData = [[SongMetaData alloc] initWithMediaItem:item fromPeer:self.peerID];
 		[self.songsToShare addObject: songData];
-	}
-}
-
--(void)prepareAssetReaderFor:(MPMediaItem *)song
-{
-	NSURL *mediaURL = [song valueForProperty:MPMediaItemPropertyAssetURL];
-	AVURLAsset *asset = [AVURLAsset URLAssetWithURL:mediaURL options:nil];
-	AVAssetReader *assetReader = [AVAssetReader assetReaderWithAsset:asset error:nil];
-	self.assetOutput = [AVAssetReaderTrackOutput assetReaderTrackOutputWithTrack:asset.tracks[0] outputSettings:nil];
-	
-	[assetReader addOutput:self.assetOutput];
-	[assetReader startReading];
-}
-
--(void)prepareOutputStreamFor:(MCPeerID *)peer
-{
-	NSError *error;
-	self.outStream = [self.session startStreamWithName:@"musicStream" toPeer:peer error:&error];
-	[self.outStream setDelegate:self];
-	[self.outStream scheduleInRunLoop: [NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-	[self.outStream open];
-}
-
-
--(void)provideDataToStream
-{
-	CMSampleBufferRef sampleBuffer = [self.assetOutput copyNextSampleBuffer];
-	CMBlockBufferRef blockBuffer;
-	AudioBufferList audioBufferList;
-	
-	CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(sampleBuffer, NULL, &audioBufferList, sizeof(AudioBufferList), NULL, NULL, kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment, &blockBuffer);
-	
-	for (NSUInteger i = 0; i < audioBufferList.mNumberBuffers; i++)
-	{
-		AudioBuffer audioBuffer = audioBufferList.mBuffers[i];
-		[self.outStream write:audioBuffer.mData maxLength:audioBuffer.mDataByteSize];
 	}
 }
 
@@ -229,33 +192,6 @@ static NSString * const HBServiceType = @"hearbud-service";
 	NSArray *queryitems = [mediaQuery items];
 	DLog(@"found song %@ matching request", ((MPMediaItem *)queryitems[0]).title);
 	return queryitems[0];
-}
-
-
-#pragma mark - NSStream Delegate Methods
-
--(void) stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode
-{
-	switch (eventCode) {
-		case NSStreamEventHasBytesAvailable:
-			break;
-			
-		case NSStreamEventHasSpaceAvailable:
-			[self provideDataToStream];
-			break;
-			
-		case NSStreamEventEndEncountered:
-
-			break;
-			
-		case NSStreamEventErrorOccurred:
-
-			break;
-			
-		default:
-			break;
-	}
-	
 }
 
 
@@ -295,10 +231,12 @@ static NSString * const HBServiceType = @"hearbud-service";
 	}
 	else if ([receivedData isKindOfClass:[SongMetaData class]])
 	{
+		NSError *err;
 		SongMetaData *songMetaData = receivedData;
 		MPMediaItem *song = [self retrieveMediaForSongData: songMetaData];
-		[self prepareAssetReaderFor:song];
-		[self prepareOutputStreamFor:peerID];
+		NSOutputStream *outStream = [self.session startStreamWithName:@"musicStream" toPeer:peerID error:&err];
+		[[OutStreamManager sharedInstance] prepareAssetReaderFor:song];
+		[[OutStreamManager sharedInstance] prepareOutputStream:outStream];
 	}
 }
 
@@ -317,7 +255,12 @@ static NSString * const HBServiceType = @"hearbud-service";
 
 -(void)session:(MCSession *)session didReceiveStream:(NSInputStream *)stream withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID
 {
-	
+	if ([streamName isEqualToString:@"musicStream"])
+	{
+		[stream setDelegate: [InStreamManager sharedInstance]];
+		[stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+		[stream open];
+	}
 }
 
 @end

@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3C0651B019FF6D250029C44A /* StreamManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0651AF19FF6D250029C44A /* StreamManager.m */; };
+		3C0651B31A016B3B0029C44A /* InStreamManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0651B21A016B3B0029C44A /* InStreamManager.m */; };
+		3C0651B61A016B9D0029C44A /* OutStreamManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0651B51A016B9D0029C44A /* OutStreamManager.m */; };
 		3CE65EDF19F6B6D1008B5110 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65EDE19F6B6D1008B5110 /* main.m */; };
 		3CE65EE219F6B6D1008B5110 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65EE119F6B6D1008B5110 /* AppDelegate.m */; };
 		3CE65EE519F6B6D1008B5110 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CE65EE419F6B6D1008B5110 /* FirstViewController.m */; };
@@ -33,8 +34,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3C0651AE19FF6D250029C44A /* StreamManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StreamManager.h; path = Managers/StreamManager.h; sourceTree = "<group>"; };
-		3C0651AF19FF6D250029C44A /* StreamManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StreamManager.m; path = Managers/StreamManager.m; sourceTree = "<group>"; };
+		3C0651B11A016B3B0029C44A /* InStreamManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InStreamManager.h; path = Managers/InStreamManager.h; sourceTree = "<group>"; };
+		3C0651B21A016B3B0029C44A /* InStreamManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = InStreamManager.m; path = Managers/InStreamManager.m; sourceTree = "<group>"; };
+		3C0651B41A016B9D0029C44A /* OutStreamManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OutStreamManager.h; path = Managers/OutStreamManager.h; sourceTree = "<group>"; };
+		3C0651B51A016B9D0029C44A /* OutStreamManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OutStreamManager.m; path = Managers/OutStreamManager.m; sourceTree = "<group>"; };
 		3C87B31919FA062900ABB9EB /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		3CE65ED919F6B6D1008B5110 /* HearBud.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HearBud.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3CE65EDD19F6B6D1008B5110 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -151,8 +154,10 @@
 			children = (
 				3CE65F0619F6B7B7008B5110 /* MultipeerManager.h */,
 				3CE65F0719F6B7B7008B5110 /* MultipeerManager.m */,
-				3C0651AE19FF6D250029C44A /* StreamManager.h */,
-				3C0651AF19FF6D250029C44A /* StreamManager.m */,
+				3C0651B11A016B3B0029C44A /* InStreamManager.h */,
+				3C0651B21A016B3B0029C44A /* InStreamManager.m */,
+				3C0651B41A016B9D0029C44A /* OutStreamManager.h */,
+				3C0651B51A016B9D0029C44A /* OutStreamManager.m */,
 			);
 			name = Managers;
 			sourceTree = "<group>";
@@ -268,8 +273,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CE65EE819F6B6D1008B5110 /* SecondViewController.m in Sources */,
-				3C0651B019FF6D250029C44A /* StreamManager.m in Sources */,
+				3C0651B61A016B9D0029C44A /* OutStreamManager.m in Sources */,
 				3CEA60B119FA4E9800AB9B80 /* SongMetaData.m in Sources */,
+				3C0651B31A016B3B0029C44A /* InStreamManager.m in Sources */,
 				3CE65EE219F6B6D1008B5110 /* AppDelegate.m in Sources */,
 				3CE65EE519F6B6D1008B5110 /* FirstViewController.m in Sources */,
 				3CE65EDF19F6B6D1008B5110 /* main.m in Sources */,
