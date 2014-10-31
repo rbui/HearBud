@@ -21,6 +21,13 @@ static InStreamManager *_sharedInstance;
 
 @end
 
+
+void audioQueueOutputCallback(void *inUserData, AudioQueueRef inAudioQueue, AudioQueueBufferRef inAudioQueueBuffer)
+{
+	InStreamManager *inStreamManager = (__bridge InStreamManager *)inUserData;
+//	[inStreamManager didFreeAudioQueueBuffer:inAudioQueueBuffer];
+}
+
 @implementation InStreamManager
 
 #pragma mark - Constructors
@@ -115,6 +122,32 @@ void AudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, UI
 		AudioFileStreamGetProperty(audioFileStreamID, kAudioFileStreamProperty_DataFormat, &basicDescriptionSize, &basicDescription);
 	}
 }
+
+-(void) setupAudioQueueForStreamDescription:(AudioStreamBasicDescription) basicDescription
+{
+	AudioQueueRef audioQueue;
+	AudioQueueNewOutput(&basicDescription, audioQueueOutputCallback, (__bridge void *)self, NULL, NULL, 0, &audioQueue);
+	
+	AudioQueueBufferRef audioQueueBuffer;
+	AudioQueueAllocateBuffer(audioQueue, 2048, &audioQueueBuffer);
+}
+
+
+#pragma mark - Audio Queue Events
+
+- (void)didFreeAudioQueueBuffer:(AudioQueueBufferRef)audioQueueBuffer
+{
+//	[self.bufferManager freeAudioQueueBuffer:audioQueueBuffer];
+//	
+//	[self.waitForFreeBufferCondition lock];
+//	[self.waitForFreeBufferCondition signal];
+//	[self.waitForFreeBufferCondition unlock];
+//	
+//	if (self.state == TDAudioQueueStateStopped && ![self.bufferManager isProcessingAudioQueueBuffer]) {
+//		[self.delegate audioQueueDidFinishPlaying:self];
+//	}
+}
+
 
 #pragma mark - NSStream Delegate Methods
 

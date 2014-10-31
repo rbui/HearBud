@@ -11,7 +11,6 @@
 
 #import "FirstViewController.h"
 #import "MultipeerManager.h"
-#import "Common.h"
 #import "SongMetaData.h"
 
 @interface FirstViewController ()
@@ -25,8 +24,10 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	
+	_songs = [[NSMutableArray alloc] init];
+	
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(didReceiveDataWithNotification:)
+											 selector:@selector(didReceiveSongsWithNotification:)
 												 name:MMDidReceiveSongListNotificationKey
 											   object:nil];
 	
@@ -54,13 +55,16 @@
 
 #pragma mark - Private Methods
 
--(void)didReceiveDataWithNotification: (NSNotification *) notification
+-(void)didReceiveSongsWithNotification: (NSNotification *) notification
 {
 	MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-	self.songs = [[notification userInfo] objectForKey:@"songs"];
-
-	DLog(@"Received %lu songs from %@", (unsigned long)[self.songs count], peerID.displayName);
-	[self.songsTable reloadData];
+	NSArray *songs = [[notification userInfo] objectForKey:@"songs"];
+	if ([songs count] > 0 && ![peerID isEqual:nil])
+	{
+		DLog(@"Received %lu songs from %@", (unsigned long)[self.songs count], peerID.displayName);
+		[self.songs addObjectsFromArray:songs];
+		[self.songsTable reloadData];
+	}
 }
 
 
@@ -103,7 +107,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	
+	[[MultipeerManager sharedInstance] sendSongRequestToPeer: [self.songs objectAtIndex:indexPath.row]];
 }
 
 

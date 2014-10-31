@@ -7,7 +7,6 @@
 //
 
 @import MediaPlayer;
-#import <Foundation/Foundation.h>
 @import MultipeerConnectivity;
 
 @interface SongMetaData : NSObject <NSSecureCoding>

@@ -29,6 +29,7 @@
 	[[MultipeerManager sharedInstance] advertiseSelf: self.advertiseVisibleSwitch.isOn];
 	[[MultipeerManager sharedInstance] setupMCBrowser];
 	[[MultipeerManager sharedInstance].browser setDelegate:self];
+	[[MultipeerManager sharedInstance] createListOfSongsToShare];
 	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self

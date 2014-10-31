@@ -9,10 +9,8 @@
 @import AVFoundation;
 
 #import "MultipeerManager.h"
-#import "Common.h"
 #import "SongMetaData.h"
-#import "OutStreamManager.h"
-#import "InStreamManager.h"
+#import "TDAudioStreamer.h"
 
 
 #pragma mark - Constants
@@ -28,7 +26,8 @@ static MultipeerManager *_sharedInstance;
 
 @interface MultipeerManager ()
 
-
+@property TDAudioOutputStreamer *outputStreamer;
+@property TDAudioInputStreamer *inputStreamer;
 
 -(void) sendSongListToPeers;
 
@@ -74,10 +73,7 @@ static MultipeerManager *_sharedInstance;
 
 	_allSongsQuery = [[MPMediaQuery alloc] init];
 	_songsToShare = [[NSMutableArray alloc] init];
-	[self createListOfSongsToShare];
-	
-//	MPMediaQuery *allSongsQuery = [[MPMediaQuery alloc] init];
-//	_songsToShare = [[NSMutableArray alloc] initWithArray: allSongsQuery.items];
+
 	DLog(@"Will share %u songs", (unsigned int)[self.songsToShare count])
 	return self;
 }
@@ -132,20 +128,24 @@ static MultipeerManager *_sharedInstance;
 
 	DLog(@"size of songlist to be sent is %lu", (unsigned long)songsData.length)
 	
-	NSError *error;
-	BOOL isSuccessful = [self.session sendData:songsData
-											   toPeers:self.connectedDevices
-											  withMode:MCSessionSendDataReliable
-												 error:&error];
-
-	if (!isSuccessful)
+	if ([self.songsToShare count] > 0)
 	{
-		NSLog(@"%@", [error localizedDescription]);
+		NSError *error;
+		BOOL isSuccessful = [self.session sendData:songsData
+										   toPeers:self.connectedDevices
+										  withMode:MCSessionSendDataReliable
+											 error:&error];
+
+		if (!isSuccessful)
+		{
+			NSLog(@"%@", [error localizedDescription]);
+		}
 	}
 }
 
 -(void) sendSongRequestToPeer:(SongMetaData *)songData
 {
+	DLog(@"Sending request song reqest");
 	NSData *data = [NSKeyedArchiver archivedDataWithRootObject: songData];
 	
 	NSError *error;
@@ -208,6 +208,7 @@ static MultipeerManager *_sharedInstance;
 													  userInfo:dict];
 	if (state == MCSessionStateConnected)
 	{
+		DLog(@"%@ connected to %@", self.peerID, peerID);
 		[self sendSongListToPeers];
 	}
 }
@@ -217,10 +218,12 @@ static MultipeerManager *_sharedInstance;
 {
 	id receivedData = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 	
+	DLog(@"Data received class : %@", [receivedData class]);
+	
 	if ([receivedData isKindOfClass:[NSArray class]])
 	{
 		NSArray *songList = [[NSArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
-		DLog(@"data received size is %lu", (unsigned long)data.length);
+		DLog(@"received song list size is %lu", (unsigned long)[songList count]);
 		//	DLog(@"song list dearchived count: %lu", [songList count]);
 		NSDictionary *dict = @{@"peerID": peerID,
 							   @"songs" : songList
@@ -231,12 +234,16 @@ static MultipeerManager *_sharedInstance;
 	}
 	else if ([receivedData isKindOfClass:[SongMetaData class]])
 	{
+		DLog(@"received song request");
 		NSError *err;
 		SongMetaData *songMetaData = receivedData;
 		MPMediaItem *song = [self retrieveMediaForSongData: songMetaData];
 		NSOutputStream *outStream = [self.session startStreamWithName:@"musicStream" toPeer:peerID error:&err];
-		[[OutStreamManager sharedInstance] prepareAssetReaderFor:song];
-		[[OutStreamManager sharedInstance] prepareOutputStream:outStream];
+		
+		self.outputStreamer = [[TDAudioOutputStreamer alloc] initWithOutputStream:outStream];
+		[self.outputStreamer streamAudioFromURL:[song valueForProperty:MPMediaItemPropertyAssetURL]];
+		[self.outputStreamer start];
+		DLog(@"stream started")
 	}
 }
 
@@ -257,9 +264,15 @@ static MultipeerManager *_sharedInstance;
 {
 	if ([streamName isEqualToString:@"musicStream"])
 	{
-		[stream setDelegate: [InStreamManager sharedInstance]];
-		[stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-		[stream open];
+		DLog(@"received stream");
+//		[stream setDelegate: [InStreamManager sharedInstance]];
+//		[stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+//		[stream open];
+		
+		if (!self.inputStreamer) {
+			self.inputStreamer = [[TDAudioInputStreamer alloc] initWithInputStream:stream];
+			[self.inputStreamer start];
+		}
 	}
 }
 
