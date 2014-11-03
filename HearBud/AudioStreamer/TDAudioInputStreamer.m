@@ -56,6 +56,7 @@
 - (void)start
 {
     if (![[NSThread currentThread] isEqual:[NSThread mainThread]]) {
+		DLog(@"starting new stream");
         return [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:YES];
     }
 
@@ -157,7 +158,7 @@
 - (void)audioQueueDidFinishPlaying:(TDAudioQueue *)audioQueue
 {
     [self performSelectorOnMainThread:@selector(notifyMainThread:) withObject:TDAudioStreamDidFinishPlayingNotification waitUntilDone:NO];
-}
+}	
 
 - (void)audioQueueDidStartPlaying:(TDAudioQueue *)audioQueue
 {
@@ -189,6 +190,9 @@
 - (void)stopThread
 {
     self.isPlaying = NO;
+	self.audioStream = nil;
+	[self.audioStreamerThread cancel];
+	self.audioStreamerThread = nil;
     [self.audioQueue stop];
 }
 

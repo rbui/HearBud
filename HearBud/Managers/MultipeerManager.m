@@ -233,12 +233,23 @@ static MultipeerManager *_sharedInstance;
 		NSError *err;
 		SongMetaData *songMetaData = receivedData;
 		MPMediaItem *song = [self retrieveMediaForSongData: songMetaData];
-		NSOutputStream *outStream = [self.session startStreamWithName:@"musicStream" toPeer:peerID error:&err];
+		[self.outputStreamer stop];
+		self.outputStreamer = nil;
+//		if (self.outputStreamer == nil)
+//		{
+			NSOutputStream *outStream = [self.session startStreamWithName:@"musicStream" toPeer:peerID error:&err];
+			if (err)
+			{
+				DLog(@"Error starting outstream %@", err.description);
+			}
+			
+			self.outputStreamer = [[TDAudioOutputStreamer alloc] initWithOutputStream:outStream];
+//		}
 		
-		self.outputStreamer = [[TDAudioOutputStreamer alloc] initWithOutputStream:outStream];
 		[self.outputStreamer streamAudioFromURL:[song valueForProperty:MPMediaItemPropertyAssetURL]];
+		DLog(@"starting new outstream for song %@", song.title);
 		[self.outputStreamer start];
-		DLog(@"stream started")
+		DLog(@"out stream started")
 	}
 }
 
@@ -263,11 +274,11 @@ static MultipeerManager *_sharedInstance;
 //		[stream setDelegate: [InStreamManager sharedInstance]];
 //		[stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
 //		[stream open];
+		[self.inputStreamer stop];
+		self.inputStreamer = nil;
 		
-		if (!self.inputStreamer) {
-			self.inputStreamer = [[TDAudioInputStreamer alloc] initWithInputStream:stream];
-			[self.inputStreamer start];
-		}
+		self.inputStreamer = [[TDAudioInputStreamer alloc] initWithInputStream:stream];
+		[self.inputStreamer start];
 	}
 }
 

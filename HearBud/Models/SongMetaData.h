@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *artist;
 @property (nonatomic, strong) NSString *album;
 @property (nonatomic, strong) MCPeerID *peerID;
+@property (nonatomic, assign) NSTimeInterval duration;
 
 -(id)initWithMediaItem: (MPMediaItem *)item fromPeer:(MCPeerID *)peer;
 

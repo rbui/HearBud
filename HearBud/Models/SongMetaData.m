@@ -23,9 +23,10 @@
 	self.artist = item.artist;
 	self.album = item.albumTitle;
 	self.peerID = peer;
-	
+	self.duration = item.playbackDuration;
 	return self;
 }
+
 
 #pragma mark - NSCoding Delegate Methods
 
@@ -39,6 +40,7 @@
 	self.artist = [decoder decodeObjectForKey:@"artist"];
 	self.album = [decoder decodeObjectForKey:@"album"];
 	self.peerID = [decoder decodeObjectForKey:@"peerID"];
+	self.duration = [decoder decodeDoubleForKey:@"duration"];
 
 	
 	return self;
@@ -49,6 +51,7 @@
 	[encoder encodeObject:self.artist forKey:@"artist"];
 	[encoder encodeObject:self.album forKey:@"album"];
 	[encoder encodeObject:self.peerID forKey:@"peerID"];
+	[encoder encodeDouble:self.duration forKey:@"duration"];
 }
 
 + (BOOL)supportsSecureCoding

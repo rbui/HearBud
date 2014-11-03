@@ -110,8 +110,8 @@
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
 	}
 	
-	NSString *songTitle = ((SongMetaData *)[self.songs objectAtIndex:indexPath.row]).title;
-	cell.textLabel.text = songTitle;
+	SongMetaData *song = [self.songs objectAtIndex:indexPath.row];
+	cell.textLabel.text = [NSString stringWithFormat:@"%@ %f", song.title, song.duration];
 
 //	cell.textLabel.text = [self.songs objectAtIndex:indexPath.row];
 	

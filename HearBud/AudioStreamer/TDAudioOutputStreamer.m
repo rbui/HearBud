@@ -38,10 +38,14 @@
 - (void)start
 {
     if (![[NSThread currentThread] isEqual:[NSThread mainThread]]) {
-        return [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:YES];
+        return [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
     }
 
     NSLog(@"Start");
+	if (self.streamThread != nil)
+	{
+		[self stop];
+	}
     self.streamThread = [[NSThread alloc] initWithTarget:self selector:@selector(run) object:nil];
     [self.streamThread start];
 }
@@ -114,6 +118,9 @@
 {
     self.isStreaming = NO;
     [self.audioStream close];
+	self.audioStream = nil;
+	[self.streamThread cancel];
+	self.streamThread = nil;
     NSLog(@"Stop");
 }
 

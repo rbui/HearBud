@@ -100,7 +100,51 @@ void TDAudioFileStreamPacketsListener(void *inClientData, UInt32 inNumberBytes, 
         err = AudioFileStreamParseBytes(self.audioFileStreamID, length, data, 0);
     }
 
-    if (err) [self.delegate audioFileStream:self didReceiveError:err];
+    if (err)
+	{
+		switch (err) {
+			case kAudioFileStreamError_UnsupportedFileType:
+				DLog(@"error unsupported file type: %d", (int)err);
+				break;
+			case kAudioFileStreamError_UnsupportedDataFormat:
+				DLog(@"error unsupported data format: %d", (int)err);
+				break;
+			case kAudioFileStreamError_UnsupportedProperty:
+				DLog(@"error unsupported property: %d", (int)err);
+				break;
+			case kAudioFileStreamError_BadPropertySize:
+				DLog(@"error bad property size: %d", (int)err);
+				break;
+			case kAudioFileStreamError_NotOptimized:
+				DLog(@"error not optimized: %d", (int)err);
+				break;
+			case kAudioFileStreamError_InvalidPacketOffset:
+				DLog(@"error invliad packet offset: %d", (int)err);
+				break;
+			case kAudioFileStreamError_InvalidFile:
+				DLog(@"error invalid file: %d", (int)err);
+				break;
+			case kAudioFileStreamError_ValueUnknown:
+				DLog(@"error value unknown: %d", (int)err);
+				break;
+			case kAudioFileStreamError_DataUnavailable:
+				DLog(@"error data unavailable: %d", (int)err);
+				break;
+			case kAudioFileStreamError_IllegalOperation:
+				DLog(@"error illegal operation: %d", (int)err);
+				break;
+			case kAudioFileStreamError_UnspecifiedError:
+				DLog(@"error unspecified error: %d", (int)err);
+				break;
+			case kAudioFileStreamError_DiscontinuityCantRecover:
+				DLog(@"error discontinuity can't recover: %d", (int)err);
+				break;
+			default:
+				break;
+		}
+		DLog(@"error parsing stream data: %d", (int)err);
+		[self.delegate audioFileStream:self didReceiveError:err];
+	}
 }
 
 - (void)dealloc
