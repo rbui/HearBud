@@ -11,8 +11,6 @@
 #import <MultipeerConnectivity/MultipeerConnectivity.h>
 #import "SongMetaData.h"
 
-static NSString *MMDidReceiveSongListNotificationKey;
-static NSString *MMDidReceiveSongRequestNotificationKey;
 
 @interface MultipeerManager : NSObject <MCSessionDelegate, NSStreamDelegate>
 

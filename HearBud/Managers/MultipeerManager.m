@@ -11,13 +11,8 @@
 #import "MultipeerManager.h"
 #import "SongMetaData.h"
 #import "TDAudioStreamer.h"
+#import "AppDelegate.h"
 
-
-#pragma mark - Constants
-
-static NSString *MMDidReceiveSongListNotificationKey = @"MMDidReceiveSongListNotification";
-static NSString *MMDidReceiveSongRequestNotificationKey = @"MMCDidReceiveSongRequestNotification";
-static NSString * const HBServiceType = @"hearbud-service";
 
 #pragma mark - Class Variables
 
@@ -228,7 +223,7 @@ static MultipeerManager *_sharedInstance;
 		NSDictionary *dict = @{@"peerID": peerID,
 							   @"songs" : songList
 							   };
-		[[NSNotificationCenter defaultCenter] postNotificationName:MMDidReceiveSongListNotificationKey
+		[[NSNotificationCenter defaultCenter] postNotificationName:HBReceivedSongListNotificationKey
 															object:nil
 														  userInfo:dict];
 	}

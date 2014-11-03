@@ -12,6 +12,7 @@
 #import "FirstViewController.h"
 #import "MultipeerManager.h"
 #import "SongMetaData.h"
+#import "AppDelegate.h"
 
 @interface FirstViewController ()
 
@@ -21,16 +22,27 @@
 
 @implementation FirstViewController
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
-	
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+	DLog(@"init called");
+	if((self = [super initWithCoder:aDecoder]) == nil)
+	{
+		return nil;
+	}
 	_songs = [[NSMutableArray alloc] init];
 	
+	DLog(@"registered for notification %@", HBReceivedSongListNotificationKey);
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(didReceiveSongsWithNotification:)
-												 name:MMDidReceiveSongListNotificationKey
+												 name:HBReceivedSongListNotificationKey
 											   object:nil];
 	
+	return self;
+}
+
+-(void)dealloc
+{
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:HBReceivedSongListNotificationKey object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -59,6 +71,7 @@
 {
 	MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
 	NSArray *songs = [[notification userInfo] objectForKey:@"songs"];
+		DLog(@"notified for songs received %@", notification.description);
 	if ([songs count] > 0 && ![peerID isEqual:nil])
 	{
 		DLog(@"Received %lu songs from %@", (unsigned long)[self.songs count], peerID.displayName);
