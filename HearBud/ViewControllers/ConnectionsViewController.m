@@ -25,11 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 	
-	[[MultipeerManager sharedInstance] setupPeerAndSessionWithDisplayName: [[UIDevice currentDevice] name]];
-	[[MultipeerManager sharedInstance] advertiseSelf: self.advertiseVisibleSwitch.isOn];
-	[[MultipeerManager sharedInstance] setupMCBrowser];
+//	[[MultipeerManager sharedInstance] advertiseSelf: self.advertiseVisibleSwitch.isOn];
 	[[MultipeerManager sharedInstance].browser setDelegate:self];
-	[[MultipeerManager sharedInstance] createListOfSongsToShare];
 	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self

@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import "MultipeerManager.h"
 
 @interface AppDelegate ()
 
@@ -18,6 +18,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	// Override point for customization after application launch.
+	
+	[[MultipeerManager sharedInstance] setupPeerAndSessionWithDisplayName: [[UIDevice currentDevice] name]];
+	[[MultipeerManager sharedInstance] setupMCBrowser];
+	[[MultipeerManager sharedInstance] advertiseSelf:YES];
+	[[MultipeerManager sharedInstance] createListOfSongsToShare];
+	
 	return YES;
 }
 
