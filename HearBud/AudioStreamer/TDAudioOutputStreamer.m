@@ -37,7 +37,9 @@
 
 - (void)start
 {
-    if (![[NSThread currentThread] isEqual:[NSThread mainThread]]) {
+    if (![[NSThread currentThread] isEqual:[NSThread mainThread]])
+	{
+		DLog(@"starting out stream on main thread");
         return [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
     }
 
@@ -54,10 +56,14 @@
 {
     @autoreleasepool {
         [self.audioStream open];
-
-        self.isStreaming = YES;
+		
+		self.isStreaming = YES;
         NSLog(@"Loop");
 
+		DLog(@"now is %@, distantFuture is :%@", [NSDate date], [NSDate distantFuture]);
+		[[NSRunLoop currentRunLoop] cancelPerformSelectorsWithTarget:self.streamThread];
+		BOOL runResult = [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+		DLog(@"run result is: %i", runResult);
         while (self.isStreaming && [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]]) ;
 
         NSLog(@"Done");
@@ -95,6 +101,7 @@
     OSStatus err = CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(sampleBuffer, NULL, &audioBufferList, sizeof(AudioBufferList), NULL, NULL, kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment, &blockBuffer);
 
     if (err) {
+		DLog(@"error getting audio buffer");
         CFRelease(sampleBuffer);
         return;
     }
@@ -111,6 +118,7 @@
 
 - (void)stop
 {
+	DLog(@"stopping out stream");
     [self performSelector:@selector(stopThread) onThread:self.streamThread withObject:nil waitUntilDone:YES];
 }
 

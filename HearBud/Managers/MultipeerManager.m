@@ -21,8 +21,9 @@ static MultipeerManager *_sharedInstance;
 
 @interface MultipeerManager ()
 
-@property TDAudioOutputStreamer *outputStreamer;
-@property TDAudioInputStreamer *inputStreamer;
+@property (nonatomic, strong) TDAudioOutputStreamer *outputStreamer;
+@property (nonatomic, strong) TDAudioInputStreamer *inputStreamer;
+@property (nonatomic, strong) NSOutputStream *outStream;
 
 -(void) sendSongListToPeers;
 
@@ -33,7 +34,6 @@ static MultipeerManager *_sharedInstance;
 
 
 #pragma mark - Properties
-
 
 
 #pragma mark - Constructors
@@ -65,6 +65,7 @@ static MultipeerManager *_sharedInstance;
 	_browser = nil;
 	_advertiser = nil;
 	_connectedDevices = [[NSMutableArray alloc] init];
+	self.outStream = nil;
 
 	_allSongsQuery = [[MPMediaQuery alloc] init];
 	_songsToShare = [[NSMutableArray alloc] init];
@@ -218,8 +219,6 @@ static MultipeerManager *_sharedInstance;
 	if ([receivedData isKindOfClass:[NSArray class]])
 	{
 		NSArray *songList = [[NSArray alloc] initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
-		DLog(@"received song list size is %lu", (unsigned long)[songList count]);
-		//	DLog(@"song list dearchived count: %lu", [songList count]);
 		NSDictionary *dict = @{@"peerID": peerID,
 							   @"songs" : songList
 							   };
@@ -233,18 +232,25 @@ static MultipeerManager *_sharedInstance;
 		NSError *err;
 		SongMetaData *songMetaData = receivedData;
 		MPMediaItem *song = [self retrieveMediaForSongData: songMetaData];
+		
+		DLog(@"calling stop");
 		[self.outputStreamer stop];
 		self.outputStreamer = nil;
-//		if (self.outputStreamer == nil)
-//		{
-			NSOutputStream *outStream = [self.session startStreamWithName:@"musicStream" toPeer:peerID error:&err];
-			if (err)
-			{
-				DLog(@"Error starting outstream %@", err.description);
-			}
+		DLog(@"stopped stream, starting new session stream");
+		NSOutputStream *outStream = [self.session startStreamWithName:@"musicStream"
+													toPeer:peerID
+													 error:&err];
+		if (!err)
+		{
+			self.outStream = outStream;
+		}
+		else
+		{
+			DLog(@"Error starting outstream %@", err.description);
+		}
 			
-			self.outputStreamer = [[TDAudioOutputStreamer alloc] initWithOutputStream:outStream];
-//		}
+		self.outputStreamer = [[TDAudioOutputStreamer alloc]
+							   initWithOutputStream:self.outStream];
 		
 		[self.outputStreamer streamAudioFromURL:[song valueForProperty:MPMediaItemPropertyAssetURL]];
 		DLog(@"starting new outstream for song %@", song.title);
@@ -268,12 +274,9 @@ static MultipeerManager *_sharedInstance;
 
 -(void)session:(MCSession *)session didReceiveStream:(NSInputStream *)stream withName:(NSString *)streamName fromPeer:(MCPeerID *)peerID
 {
+	DLog(@"received new stream named: %@", streamName);
 	if ([streamName isEqualToString:@"musicStream"])
 	{
-		DLog(@"received stream");
-//		[stream setDelegate: [InStreamManager sharedInstance]];
-//		[stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
-//		[stream open];
 		[self.inputStreamer stop];
 		self.inputStreamer = nil;
 		

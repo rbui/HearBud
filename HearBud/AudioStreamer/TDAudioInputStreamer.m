@@ -56,10 +56,10 @@
 - (void)start
 {
     if (![[NSThread currentThread] isEqual:[NSThread mainThread]]) {
-		DLog(@"starting new stream");
+		DLog(@"starting new stream thread");
         return [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:YES];
     }
-
+	DLog(@"runnning new stream thread");
     self.audioStreamerThread = [[NSThread alloc] initWithTarget:self selector:@selector(run) object:nil];
     [self.audioStreamerThread start];
 }
