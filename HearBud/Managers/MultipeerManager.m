@@ -84,7 +84,15 @@ static MultipeerManager *_sharedInstance;
 
 -(void)setupPeerAndSessionWithDisplayName:(NSString *)displayName
 {
-	self.peerID = [[MCPeerID alloc] initWithDisplayName:displayName];
+	if ([displayName isEqualToString:@""] || displayName == nil)
+	{
+		self.peerID = [[MCPeerID alloc]
+					   initWithDisplayName:[[UIDevice currentDevice] name]];
+	}
+	else
+	{
+		self.peerID = [[MCPeerID alloc] initWithDisplayName:displayName];
+	}
 	self.session = [[MCSession alloc] initWithPeer:self.peerID];
 	self.session.delegate = self;
 }
@@ -93,6 +101,8 @@ static MultipeerManager *_sharedInstance;
 {
 	self.browser = [[MCBrowserViewController alloc]
 					initWithServiceType:HBServiceType session:self.session];
+	DLog(@"browser setup complete");
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"MCBrowserSetupComplete" object:nil];
 }
 
 -(void) advertiseSelf:(BOOL)shouldAdvertise
@@ -119,6 +129,16 @@ static MultipeerManager *_sharedInstance;
 
 #pragma mark - Public Send Song Data Methods
 
+-(void)createListOfSongsToShare
+{
+	NSArray *queryResults = [self.allSongsQuery items];
+	for (MPMediaItem *item in queryResults)
+	{
+		SongMetaData *songData = [[SongMetaData alloc] initWithMediaItem:item fromPeer:self.peerID];
+		[self.songsToShare addObject: songData];
+	}
+}
+
 -(void) sendSongListToPeers
 {
 	NSData *songsData = [NSKeyedArchiver archivedDataWithRootObject: self.songsToShare];
@@ -135,7 +155,7 @@ static MultipeerManager *_sharedInstance;
 
 		if (!isSuccessful)
 		{
-			NSLog(@"%@", [error localizedDescription]);
+			DLog(@"%@", [error localizedDescription]);
 		}
 	}
 }
@@ -179,16 +199,6 @@ static MultipeerManager *_sharedInstance;
 
 #pragma mark - Private Methods
 
--(void)createListOfSongsToShare
-{
-	NSArray *queryResults = [self.allSongsQuery items];
-	for (MPMediaItem *item in queryResults)
-	{
-		SongMetaData *songData = [[SongMetaData alloc] initWithMediaItem:item fromPeer:self.peerID];
-		[self.songsToShare addObject: songData];
-	}
-}
-
 -(MPMediaItem *) retrieveMediaForSongData: (SongMetaData *) songData
 {
 	MPMediaPropertyPredicate *titlePredicate =
@@ -224,7 +234,16 @@ static MultipeerManager *_sharedInstance;
 	if (state == MCSessionStateConnected)
 	{
 		DLog(@"%@ connected to %@", self.peerID, peerID);
+		[self.connectedDevices addObject: peerID];
 		[self sendSongListToPeers];
+	}
+	else if (state == MCSessionStateNotConnected)
+	{
+		if ([self.connectedDevices count] > 0)
+		{
+			NSUInteger indexOfPeer = [self.connectedDevices indexOfObject:peerID];
+			[self.connectedDevices removeObjectAtIndex:indexOfPeer];
+		}
 	}
 }
 

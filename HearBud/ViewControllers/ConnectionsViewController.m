@@ -22,17 +22,26 @@
 
 @implementation ConnectionsViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-	
-//	[[MultipeerManager sharedInstance] advertiseSelf: self.advertiseVisibleSwitch.isOn];
-	[[MultipeerManager sharedInstance].browser setDelegate:self];
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+	if ((self = [super initWithCoder:aDecoder]) == nil)
+	{
+		return nil;
+	}
+	DLog(@"connections view controlled inited");
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(browserSetupDidComplete) name:@"MCBrowserSetupComplete" object:nil];
 	
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(peerDidChangeStateWithNotification:)
 												 name:@"MCDidChangeStateNotification"
 											   object:nil];
+	
+	return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
 	
 	[self.connectionsTable setDelegate:self];
 	[self.connectionsTable setDataSource:self];
@@ -65,29 +74,20 @@
 
 -(void)peerDidChangeStateWithNotification:(NSNotification *)notification
 {
-	MCPeerID *peerID = [[notification userInfo] objectForKey:@"peerID"];
-//	NSString *peerDisplayName = peerID.displayName;
-	MCSessionState state = [[[notification userInfo] objectForKey:@"state"] intValue];
 	MultipeerManager *multiManager = [MultipeerManager sharedInstance];
-	
-	if (state == MCSessionStateConnected) {
-//		[multiManager.connectedDevices addObject:peerDisplayName];
-		[multiManager.connectedDevices addObject: peerID];
-	}
-	else if (state == MCSessionStateNotConnected){
-		if ([multiManager.connectedDevices count] > 0) {
-			int indexOfPeer = [multiManager.connectedDevices indexOfObject:peerID];
-			[multiManager.connectedDevices removeObjectAtIndex:indexOfPeer];
-		}
-	}
 	
 	[self.connectionsTable reloadData];
 	
 	BOOL peersExist = ([[multiManager.session connectedPeers] count] == 0);
 	[self.disconnectButton setEnabled:!peersExist];
 	[self.nameTextField setEnabled:peersExist];
-
 }
+
+-(void)browserSetupDidComplete
+{
+	[[MultipeerManager sharedInstance].browser setDelegate:self];
+}
+
 
 #pragma mark - MCBrowserViewController Delegate Methods
 

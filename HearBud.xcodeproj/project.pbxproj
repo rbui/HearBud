@@ -191,12 +191,12 @@
 				3CE65EE419F6B6D1008B5110 /* FirstViewController.m */,
 				3CE65EE619F6B6D1008B5110 /* SecondViewController.h */,
 				3CE65EE719F6B6D1008B5110 /* SecondViewController.m */,
+				3CE65F0C19F6C713008B5110 /* ConnectionsViewController.h */,
+				3CE65F0D19F6C713008B5110 /* ConnectionsViewController.m */,
 				3CE65EE919F6B6D1008B5110 /* Main.storyboard */,
 				3CE65EEC19F6B6D1008B5110 /* Images.xcassets */,
 				3CE65EEE19F6B6D1008B5110 /* LaunchScreen.xib */,
 				3CE65EDC19F6B6D1008B5110 /* Supporting Files */,
-				3CE65F0C19F6C713008B5110 /* ConnectionsViewController.h */,
-				3CE65F0D19F6C713008B5110 /* ConnectionsViewController.m */,
 			);
 			path = HearBud;
 			sourceTree = "<group>";
