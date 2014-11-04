@@ -28,6 +28,9 @@
 -(void)changeDisplayNameAndRestartSession:(NSString *) displayName;
 -(void)sendSongRequestToPeer:(SongMetaData *)songData;
 -(void)createListOfSongsToShare;
+-(void)pausePlayback;
+-(void)stopPlayback;
+-(void)resumePlayback;
 
 +(MultipeerManager *) sharedInstance;
 

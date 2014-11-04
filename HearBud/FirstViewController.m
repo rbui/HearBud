@@ -64,6 +64,21 @@
 	[self presentViewController:mediaPickerController animated:YES completion:nil];
 }
 
+- (IBAction)pausePlayback:(id)sender {
+	UIButton *button = sender;
+	if (button.selected)
+	{
+		[[MultipeerManager sharedInstance] resumePlayback];
+		button.selected = !button.selected;
+	}
+	else
+	{
+		[[MultipeerManager sharedInstance] pausePlayback];
+		button.selected = !button.selected;
+	}
+	
+}
+
 
 #pragma mark - Private Methods
 

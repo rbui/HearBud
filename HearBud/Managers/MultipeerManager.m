@@ -75,7 +75,7 @@ static MultipeerManager *_sharedInstance;
 }
 
 
-#pragma mark - Public Methods
+#pragma mark - Public Multipeer Methods
 
 + (MultipeerManager *) sharedInstance
 {
@@ -117,6 +117,7 @@ static MultipeerManager *_sharedInstance;
 	[self setupMCBrowser];
 }
 
+#pragma mark - Public Send Song Data Methods
 
 -(void) sendSongListToPeers
 {
@@ -155,6 +156,24 @@ static MultipeerManager *_sharedInstance;
 	{
 		NSLog(@"%@", [error localizedDescription]);
 	}
+}
+
+
+#pragma mark - Public Playback Methods
+
+-(void)stopPlayback
+{
+	[self.inputStreamer stop];
+}
+
+-(void)resumePlayback
+{
+	[self.inputStreamer resume];
+}
+
+-(void)pausePlayback
+{
+	[self.inputStreamer pause];
 }
 
 
@@ -281,7 +300,9 @@ static MultipeerManager *_sharedInstance;
 		self.inputStreamer = nil;
 		
 		self.inputStreamer = [[TDAudioInputStreamer alloc] initWithInputStream:stream];
+		DLog(@"starting new input stream");
 		[self.inputStreamer start];
+		DLog(@"input stream started");
 	}
 }
 
