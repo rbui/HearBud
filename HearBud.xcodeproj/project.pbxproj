@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C0087401A0AEFAB00CB74C9 /* PlayBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3C00873F1A0AEFAB00CB74C9 /* PlayBarView.xib */; };
+		3C0087431A0B9D9500CB74C9 /* SongTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0087421A0B9D9500CB74C9 /* SongTableViewCell.m */; };
 		3C0651D51A0324110029C44A /* NSMutableArray+QueueMethods.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0651BD1A0324110029C44A /* NSMutableArray+QueueMethods.m */; };
 		3C0651D61A0324110029C44A /* TDAudioFileStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0651C01A0324110029C44A /* TDAudioFileStream.m */; };
 		3C0651D71A0324110029C44A /* TDAudioQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 3C0651C21A0324110029C44A /* TDAudioQueue.m */; };
@@ -44,6 +46,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C00873F1A0AEFAB00CB74C9 /* PlayBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayBarView.xib; sourceTree = "<group>"; };
+		3C0087411A0B9D9500CB74C9 /* SongTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongTableViewCell.h; sourceTree = "<group>"; };
+		3C0087421A0B9D9500CB74C9 /* SongTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongTableViewCell.m; sourceTree = "<group>"; };
 		3C0651BC1A0324110029C44A /* NSMutableArray+QueueMethods.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+QueueMethods.h"; sourceTree = "<group>"; };
 		3C0651BD1A0324110029C44A /* NSMutableArray+QueueMethods.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+QueueMethods.m"; sourceTree = "<group>"; };
 		3C0651BF1A0324110029C44A /* TDAudioFileStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDAudioFileStream.h; sourceTree = "<group>"; };
@@ -197,6 +202,9 @@
 				3CE65EEC19F6B6D1008B5110 /* Images.xcassets */,
 				3CE65EEE19F6B6D1008B5110 /* LaunchScreen.xib */,
 				3CE65EDC19F6B6D1008B5110 /* Supporting Files */,
+				3C00873F1A0AEFAB00CB74C9 /* PlayBarView.xib */,
+				3C0087411A0B9D9500CB74C9 /* SongTableViewCell.h */,
+				3C0087421A0B9D9500CB74C9 /* SongTableViewCell.m */,
 			);
 			path = HearBud;
 			sourceTree = "<group>";
@@ -330,6 +338,7 @@
 			files = (
 				3CE65EEB19F6B6D1008B5110 /* Main.storyboard in Resources */,
 				3CE65EF019F6B6D1008B5110 /* LaunchScreen.xib in Resources */,
+				3C0087401A0AEFAB00CB74C9 /* PlayBarView.xib in Resources */,
 				3CE65EED19F6B6D1008B5110 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -356,6 +365,7 @@
 				3C0651DC1A0324110029C44A /* TDAudioStream.m in Sources */,
 				3CE65EE219F6B6D1008B5110 /* AppDelegate.m in Sources */,
 				3CE65EE519F6B6D1008B5110 /* FirstViewController.m in Sources */,
+				3C0087431A0B9D9500CB74C9 /* SongTableViewCell.m in Sources */,
 				3C0651D91A0324110029C44A /* TDAudioQueueBufferManager.m in Sources */,
 				3C0651DD1A0324110029C44A /* TDAudioInputStreamer.m in Sources */,
 				3CE65EDF19F6B6D1008B5110 /* main.m in Sources */,

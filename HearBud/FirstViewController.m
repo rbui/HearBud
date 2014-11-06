@@ -13,6 +13,9 @@
 #import "MultipeerManager.h"
 #import "SongMetaData.h"
 #import "AppDelegate.h"
+#import "SongTableViewCell.h"
+
+#define SONG_CELL_IDENTIFIER @"SongCell"
 
 @interface FirstViewController ()
 
@@ -21,6 +24,11 @@
 @end
 
 @implementation FirstViewController
+
+-(void) viewDidLoad
+{
+	[self.songsTable registerClass:[SongTableViewCell class]forCellReuseIdentifier:SONG_CELL_IDENTIFIER];
+}
 
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
@@ -119,14 +127,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UITableViewCell *cell = [self.songsTable dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+	SongTableViewCell *cell = [self.songsTable dequeueReusableCellWithIdentifier:SONG_CELL_IDENTIFIER];
 	if (cell == nil)
 	{
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CellIdentifier"];
+		cell = [[SongTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SONG_CELL_IDENTIFIER];
 	}
 	
 	SongMetaData *song = [self.songs objectAtIndex:indexPath.row];
-	cell.textLabel.text = [NSString stringWithFormat:@"%@ %f", song.title, song.duration];
+	cell.title.text = [NSString stringWithFormat:@"%@ %f", song.title, song.duration];
+	cell.artist.text = song.artist;
+//	cell.textLabel.text = [NSString stringWithFormat:@"%@ %f", song.title, song.duration];
+	
 
 //	cell.textLabel.text = [self.songs objectAtIndex:indexPath.row];
 	
